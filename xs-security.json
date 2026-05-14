@@ -1,0 +1,34 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.User",
+      "description": "Authenticated user scope"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "User",
+      "description": "Authenticated users",
+      "scope-references": [
+        "$XSAPPNAME.User"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "CAPM_User",
+      "description": "Standard authenticated users",
+      "role-template-references": [
+        "$XSAPPNAME.User"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "includeSystemAttributeGroups": true,
+    "includeSystemAttributeRoleCollections": true,
+    "credentialTypes": ["binding-secret", "x509"]
+  },
+  "authorities-inheritance": false
+}
