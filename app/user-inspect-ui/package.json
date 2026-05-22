@@ -1,0 +1,16 @@
+{
+  "name": "user-inspect-ui",
+  "version": "1.0.0",
+  "description": "Fiori Elements UI for UserInspectService",
+  "scripts": {
+    "start": "fiori run --config ui5-local.yaml --open index.html",
+    "build": "ui5 build --clean-dest && node scripts/create-zip.js"
+  },
+  "devDependencies": {
+    "@sap/ux-ui5-tooling": "^1",
+    "@ui5/cli": "^3"
+  },
+  "ui5": {
+    "dependencies": []
+  }
+}

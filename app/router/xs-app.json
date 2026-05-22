@@ -6,6 +6,12 @@
       "service": "sap-approuter-userapi"
     },
     {
+      "source": "^/user-inspect-ui/(.*)$",
+      "target": "/comcapmuserinspect-1.0.0/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
       "source": "^/(.*)$",
       "target": "$1",
       "destination": "srv-api",

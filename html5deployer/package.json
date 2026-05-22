@@ -1,0 +1,11 @@
+{
+  "name": "capm-html5-deployer",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node node_modules/@sap/html5-app-deployer/index.js"
+  },
+  "engines": { "node": "^20 || ^22" },
+  "dependencies": {
+    "@sap/html5-app-deployer": "^7"
+  }
+}

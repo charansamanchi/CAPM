@@ -31,4 +31,59 @@ service UserInspectService {
      * Returns Ariba Network supplier attributes from /userinfo response.
      */
     function getANSupplierAttributes() returns String;
+
+    @readonly
+    @(UI: {
+        HeaderInfo: {
+            TypeName:       'User Attribute',
+            TypeNamePlural: 'User Attributes',
+            Title:          { Value: email },
+            Description:    { Value: origin }
+        },
+        SelectionFields: [ email, origin, given_name, anid ],
+        LineItem: [
+            { Value: user_uuid,   Label: 'User UUID'    },
+            { Value: email,       Label: 'Email'        },
+            { Value: given_name,  Label: 'Given Name'   },
+            { Value: family_name, Label: 'Family Name'  },
+            { Value: origin,      Label: 'Origin / IdP' },
+            { Value: anid,        Label: 'ANID'         }
+        ],
+        FieldGroup #Identity: {
+            Label: 'Identity',
+            Data: [
+                { Value: user_uuid   },
+                { Value: sub         },
+                { Value: email       },
+                { Value: given_name  },
+                { Value: family_name },
+                { Value: origin      },
+                { Value: anid        }
+            ]
+        },
+        FieldGroup #IASAttributes: {
+            Label: 'IAS / Custom Attributes',
+            Data: [
+                { Value: xs_user_attributes   },
+                { Value: ias_user_attributes  },
+                { Value: ext_attr             }
+            ]
+        },
+        Facets: [
+            { $Type: 'UI.ReferenceFacet', Label: 'Identity',       Target: '@UI.FieldGroup#Identity'      },
+            { $Type: 'UI.ReferenceFacet', Label: 'IAS Attributes',  Target: '@UI.FieldGroup#IASAttributes' }
+        ]
+    })
+    entity UserAttributes {
+        key user_uuid           : String(36);
+            sub                 : String;
+            email               : String;
+            given_name          : String;
+            family_name         : String;
+            origin              : String;
+            anid                : String;
+            xs_user_attributes  : LargeString;
+            ias_user_attributes : LargeString;
+            ext_attr            : LargeString;
+    }
 }

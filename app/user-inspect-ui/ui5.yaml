@@ -1,0 +1,13 @@
+specVersion: "3.0"
+metadata:
+  name: com.capm.userinspect
+type: application
+resources:
+  configuration:
+    paths:
+      webapp: webapp
+builder:
+  resources:
+    excludes:
+      - "/test/**"
+      - "/localService/**"

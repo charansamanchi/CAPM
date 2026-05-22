@@ -1,0 +1,23 @@
+specVersion: "3.0"
+metadata:
+  name: com.capm.userinspect
+type: application
+resources:
+  configuration:
+    paths:
+      webapp: webapp
+server:
+  customMiddlewares:
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        backend:
+          - path: /odata/v4/user-inspect
+            url: http://localhost:4004
+            authenticationType: none

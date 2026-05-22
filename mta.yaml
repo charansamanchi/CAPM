@@ -40,11 +40,48 @@ modules:
           url: ~{srv-url}
           forwardAuthToken: true
       - name: CAPM-auth
+      - name: CAPM-html5repo-runtime
     provides:
       - name: app-api
         properties:
           app-protocol: ${protocol}
           app-uri: ${default-uri}
+
+  - name: CAPM-user-inspect-ui
+    type: html5
+    path: app/user-inspect-ui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms: []
+
+  - name: CAPM-html5-deployer
+    type: nodejs
+    path: html5deployer
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      memory: 256M
+      disk-quota: 512M
+      tasks:
+        - name: deploy-html5-content
+          command: npm start
+          memory: 256M
+          disk-quota: 512M
+    requires:
+      - name: CAPM-html5repo
+    build-parameters:
+      builder: npm-ci
+      build-result: .
+      requires:
+        - name: CAPM-user-inspect-ui
+          artifacts:
+            - com.capm.userinspect.zip
+          target-path: resources/
 
 resources:
   - name: CAPM-auth
@@ -64,3 +101,15 @@ resources:
             - https://*~{app-api/app-uri}/**
     requires:
       - name: app-api
+
+  - name: CAPM-html5repo
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+  - name: CAPM-html5repo-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime

@@ -119,17 +119,15 @@ module.exports = cds.service.impl(function () {
                 ?? extAttr.ias_user_attributes
                 ?? {}
             const all        = { ...xsAttrs, ...iasAttrs }
+            const anid       = all.ANID ?? all.supplierANID ?? all.SupplierANID ?? all.ariba_network_id
 
             return JSON.stringify({
                 isANSupplier: isLikelyANSupplier(info.origin, all),
 
-                // Well-known AN/supplier attribute names — actual names depend on
-                // your IAS custom schema mapping. Use _raw_* below to find real names.
-                supplierANID:     all.supplierANID     ?? all.SupplierANID,
+                ANID:             anid,
                 companyId:        all.companyId        ?? all.CompanyId,
                 vendorId:         all.vendorId         ?? all.VendorId,
                 businessPartner:  all.businessPartner,
-                ariba_network_id: all.ariba_network_id,
                 companyCode:      all.companyCode,
 
                 // Identity signals
@@ -146,13 +144,43 @@ module.exports = cds.service.impl(function () {
             return JSON.stringify({ error: e.message }, null, 2)
         }
     })
+
+    // ─── UserAttributes READ ──────────────────────────────────────────────────
+    // Synthesises a single-row entity from XSUAA /userinfo for Fiori Elements.
+    this.on('READ', 'UserAttributes', async (req) => {
+        try {
+            const info    = await fetchUserInfo(getAuthHeader(req))
+            const xsAttrs = info['xs.user.attributes'] ?? {}
+            const extAttr = info.ext_attr ?? {}
+            const iasAttrs = info.ias_user_attributes ?? extAttr.ias_user_attributes ?? {}
+            const all     = { ...xsAttrs, ...iasAttrs }
+
+            const row = {
+                user_uuid:           info.user_uuid ?? info.sub ?? req.user.id,
+                sub:                 info.sub,
+                email:               info.email,
+                given_name:          info.given_name,
+                family_name:         info.family_name,
+                origin:              info.origin,
+                anid:                all.ANID ?? all.supplierANID ?? all.SupplierANID ?? all.ariba_network_id,
+                xs_user_attributes:  JSON.stringify(xsAttrs,  null, 2),
+                ias_user_attributes: JSON.stringify(iasAttrs, null, 2),
+                ext_attr:            JSON.stringify(extAttr,  null, 2),
+            }
+            const result = [row]
+            result.$count = 1
+            return result
+        } catch (e) {
+            req.error(500, e.message)
+        }
+    })
 })
 
 function isLikelyANSupplier(origin = '', attrs = {}) {
     const o = origin.toLowerCase()
     return (
         o.includes('ariba') || o.includes('an-') ||
-        !!(attrs.supplierANID || attrs.SupplierANID ||
+        !!(attrs.ANID || attrs.supplierANID || attrs.SupplierANID ||
            attrs.ariba_network_id || attrs.companyId)
     )
 }
