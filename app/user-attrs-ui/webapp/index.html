@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Attributes</title>
+  <script>
+    window.onerror = function(msg, src, line, col, err) {
+      document.body.innerHTML = '<pre style="color:red;padding:2rem">' +
+        'GLOBAL ERROR:\n' + msg + '\nSource: ' + src + ':' + line +
+        '\n' + (err ? err.stack : '') + '</pre>';
+      return false;
+    };
+    window.addEventListener('unhandledrejection', function(e) {
+      document.body.innerHTML = '<pre style="color:red;padding:2rem">' +
+        'UNHANDLED PROMISE REJECTION:\n' + e.reason + '\n' +
+        (e.reason && e.reason.stack ? e.reason.stack : '') + '</pre>';
+    });
+  </script>
+  <script
+    id="sap-ui-bootstrap"
+    src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-resourceroots='{"com.capm.userattrs": "./"}'
+    data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+    data-sap-ui-compatVersion="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-frameOptions="allow"
+    data-sap-ui-libs="sap.ui.core,sap.fe.templates,sap.m,sap.f"
+    data-sap-ui-on-init-error="window.__ui5Error=arguments[0];document.body.innerHTML='<pre style=color:red>UI5 INIT ERROR: '+arguments[0]+'</pre>'"
+  ></script>
+  <style>
+    html, body, [data-sap-ui-component] { height: 100%; margin: 0; padding: 0; }
+  </style>
+</head>
+<body class="sapUiBody">
+  <div
+    data-sap-ui-component
+    data-name="com.capm.userattrs"
+    data-id="container"
+    data-settings='{"id": "com.capm.userattrs"}'
+    style="height:100%">
+  </div>
+</body>
+</html>

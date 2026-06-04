@@ -34,8 +34,8 @@ module.exports = cds.service.impl(function () {
         throw new Error('XSUAA URL not found — bind the xsuaa service or add default-env.json')
     }
 
-    // Standard OIDC call: GET {xsuaa_url}/userinfo with the user's Bearer token.
-    // This is the authoritative source — XSUAA validates the token and returns
+    // Standard OIDC call: GET {xsuaa_url} with the user's Bearer token.
+    // This is the authoritative source — XSUAA validates the/userinfo token and returns
     // all configured user attributes including those propagated from IAS.
     async function fetchUserInfo(authHeader) {
         if (!authHeader) throw new Error('No Authorization header in request')
@@ -146,31 +146,44 @@ module.exports = cds.service.impl(function () {
     })
 
     // ─── UserAttributes READ ──────────────────────────────────────────────────
-    // Synthesises a single-row entity from XSUAA /userinfo for Fiori Elements.
     this.on('READ', 'UserAttributes', async (req) => {
         try {
-            const info    = await fetchUserInfo(getAuthHeader(req))
+            const authHeader = getAuthHeader(req)
+            const info    = await fetchUserInfo(authHeader)
             const xsAttrs = info['xs.user.attributes'] ?? {}
             const extAttr = info.ext_attr ?? {}
             const iasAttrs = info.ias_user_attributes ?? extAttr.ias_user_attributes ?? {}
             const all     = { ...xsAttrs, ...iasAttrs }
 
+            // Decode JWT to read xs.system.attributes which /userinfo does not expose
+            const jwt = authHeader.startsWith('Bearer ') ? decodeJWT(authHeader.slice(7)) : null
+            const jwtSysAttrs = jwt?.['xs.system.attributes'] ?? {}
+            const groups   = jwtSysAttrs['xs.saml.groups'] ?? null
+            const userUuid = jwt?.user_uuid ?? info.user_uuid ?? info.sub ?? req.user.id
+
             const row = {
-                user_uuid:           info.user_uuid ?? info.sub ?? req.user.id,
-                sub:                 info.sub,
-                email:               info.email,
-                given_name:          info.given_name,
-                family_name:         info.family_name,
-                origin:              info.origin,
-                anid:                all.ANID ?? all.supplierANID ?? all.SupplierANID ?? all.ariba_network_id,
+                user_uuid:           userUuid,
+                user_id:             info.user_id             ?? null,
+                sub:                 info.sub                 ?? null,
+                sub_idp:             info.sub_idp             ?? null,
+                email:               info.email               ?? null,
+                given_name:          info.given_name          ?? null,
+                family_name:         info.family_name         ?? null,
+                origin:              info.origin              ?? null,
+                anid:                all.ANID ?? all.supplierANID ?? all.SupplierANID ?? all.ariba_network_id ?? null,
                 xs_user_attributes:  JSON.stringify(xsAttrs,  null, 2),
                 ias_user_attributes: JSON.stringify(iasAttrs, null, 2),
                 ext_attr:            JSON.stringify(extAttr,  null, 2),
+                ias_groups:          JSON.stringify(groups,   null, 2),
+                raw_userinfo:        JSON.stringify(info,     null, 2),
+                raw_token_claims:    JSON.stringify(jwt,      null, 2),
             }
+            // console.log('[UserAttributes] returning row with user_uuid:', row.user_uuid)
             const result = [row]
             result.$count = 1
             return result
         } catch (e) {
+            // console.error('[UserAttributes] ERROR:', e.message)
             req.error(500, e.message)
         }
     })

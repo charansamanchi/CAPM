@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Attribute Inspector</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f5f5f5; }
+    h1 { color: #0070f2; }
+    .card { background: #fff; border-radius: 6px; padding: 1.5rem; margin-bottom: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+    table { border-collapse: collapse; width: 100%; }
+    th { background: #0070f2; color: #fff; text-align: left; padding: .5rem .75rem; }
+    td { padding: .5rem .75rem; border-bottom: 1px solid #eee; vertical-align: top; }
+    td:first-child { font-weight: bold; color: #555; width: 220px; white-space: nowrap; }
+    pre { margin: 0; white-space: pre-wrap; word-break: break-all; font-size: .85rem; }
+    .error { color: #c00; background: #fff0f0; padding: 1rem; border-radius: 4px; }
+    .loading { color: #888; }
+  </style>
+</head>
+<body>
+  <h1>User Attribute Inspector</h1>
+  <div id="output" class="loading">Loading…</div>
+
+  <script>
+    fetch('/odata/v4/user-inspect/UserAttributes?$format=json')
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+        return r.json();
+      })
+      .then(data => {
+        const rows = data.value || [];
+        if (!rows.length) {
+          document.getElementById('output').innerHTML =
+            '<div class="error">No data returned — service returned an empty list.</div>';
+          return;
+        }
+        const u = rows[0];
+        const fields = [
+          ['User UUID',           u.user_uuid],
+          ['User ID (IAS global)',u.user_id],
+          ['Sub',                 u.sub],
+          ['Sub IdP',             u.sub_idp],
+          ['Email',               u.email],
+          ['Given Name',          u.given_name],
+          ['Family Name',         u.family_name],
+          ['Origin / IdP',        u.origin],
+          ['ANID',                u.anid],
+        ];
+        const jsonFields = [
+          ['xs.user.attributes',  u.xs_user_attributes],
+          ['ias_user_attributes', u.ias_user_attributes],
+          ['ext_attr',            u.ext_attr],
+          ['IAS Groups',          u.ias_groups],
+          ['Raw /userinfo',       u.raw_userinfo],
+          ['Raw JWT Claims',      u.raw_token_claims],
+        ];
+
+        let html = '<div class="card"><table>';
+        html += '<tr><th>Field</th><th>Value</th></tr>';
+        fields.forEach(([k, v]) => {
+          html += '<tr><td>' + k + '</td><td>' + (v != null ? v : '<em>—</em>') + '</td></tr>';
+        });
+        html += '</table></div>';
+
+        html += '<div class="card"><table>';
+        html += '<tr><th>Attribute Bag</th><th>JSON</th></tr>';
+        jsonFields.forEach(([k, v]) => {
+          html += '<tr><td>' + k + '</td><td><pre>' + (v != null ? v : '—') + '</pre></td></tr>';
+        });
+        html += '</table></div>';
+
+        document.getElementById('output').innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById('output').innerHTML =
+          '<div class="error">Error: ' + err.message +
+          '<br><small>Check browser console and CF logs for details.</small></div>';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

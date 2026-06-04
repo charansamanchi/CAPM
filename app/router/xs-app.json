@@ -1,4 +1,9 @@
 {
+  "authenticationMethod": "route",
+  "sessionTimeout": 30,
+  "logout": {
+    "logoutEndpoint": "/logout"
+  },
   "routes": [
     {
       "source": "^/user-api(.*)",
@@ -6,9 +11,14 @@
       "service": "sap-approuter-userapi"
     },
     {
-      "source": "^/user-inspect-ui/(.*)$",
-      "target": "/comcapmuserinspect-1.0.0/$1",
+      "source": "^/user-attrs-ui/(.*)$",
+      "target": "/comcapmuserattrs-1.0.1/$1",
       "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/user-inspect-ui/(.*)$",
+      "localDir": "resources",
       "authenticationType": "xsuaa"
     },
     {

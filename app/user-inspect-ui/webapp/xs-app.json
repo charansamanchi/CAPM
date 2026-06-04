@@ -1,0 +1,20 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "sap.cloud.service": "com.capm.userinspect",
+  "routes": [
+    {
+      "source": "^/odata/v4/user-inspect/(.*)$",
+      "target": "/odata/v4/user-inspect/$1",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

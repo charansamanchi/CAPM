@@ -32,6 +32,12 @@ modules:
       keep-existing-routes: true
       disk-quota: 256M
       memory: 256M
+    build-parameters:
+      requires:
+        - name: CAPM-user-inspect-ui
+          artifacts:
+            - '**'
+          target-path: resources/user-inspect-ui/
     requires:
       - name: srv-api
         group: destinations
@@ -50,6 +56,17 @@ modules:
   - name: CAPM-user-inspect-ui
     type: html5
     path: app/user-inspect-ui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms: []
+
+  - name: CAPM-user-attrs-ui
+    type: html5
+    path: app/user-attrs-ui
     build-parameters:
       build-result: dist
       builder: custom
@@ -81,6 +98,10 @@ modules:
         - name: CAPM-user-inspect-ui
           artifacts:
             - com.capm.userinspect.zip
+          target-path: resources/
+        - name: CAPM-user-attrs-ui
+          artifacts:
+            - com.capm.userattrs.zip
           target-path: resources/
 
 resources:

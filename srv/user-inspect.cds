@@ -76,7 +76,9 @@ service UserInspectService {
     })
     entity UserAttributes {
         key user_uuid           : String(36);
+            user_id             : String;
             sub                 : String;
+            sub_idp             : String;
             email               : String;
             given_name          : String;
             family_name         : String;
@@ -85,5 +87,8 @@ service UserInspectService {
             xs_user_attributes  : LargeString;
             ias_user_attributes : LargeString;
             ext_attr            : LargeString;
+            ias_groups          : LargeString;
+            raw_userinfo        : LargeString;
+            raw_token_claims    : LargeString;
     }
 }

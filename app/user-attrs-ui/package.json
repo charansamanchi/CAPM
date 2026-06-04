@@ -1,0 +1,15 @@
+{
+  "name": "user-attrs-ui",
+  "version": "1.0.1",
+  "description": "Fiori Elements UI for UserAttributes (html5-apps-repo)",
+  "scripts": {
+    "build": "ui5 build --clean-dest && node scripts/create-zip.js"
+  },
+  "devDependencies": {
+    "@sap/ux-ui5-tooling": "^1",
+    "@ui5/cli": "^3"
+  },
+  "ui5": {
+    "dependencies": []
+  }
+}

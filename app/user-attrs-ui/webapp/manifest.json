@@ -1,30 +1,17 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "com.capm.userinspect",
+    "id": "com.capm.userattrs",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
-    "applicationVersion": { "version": "1.0.0" },
+    "applicationVersion": { "version": "1.0.1" },
     "dataSources": {
       "mainService": {
         "uri": "/odata/v4/user-inspect/",
         "type": "OData",
         "settings": { "odataVersion": "4.0" }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "UserInspect-display": {
-          "semanticObject": "UserInspect",
-          "action": "display",
-          "title": "{{appTitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
-        }
       }
     }
   },
@@ -58,7 +45,7 @@
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "settings": { "bundleName": "com.capm.userinspect.i18n.i18n" }
+        "settings": { "bundleName": "com.capm.userattrs.i18n.i18n" }
       },
       "": {
         "dataSource": "mainService",
@@ -68,7 +55,7 @@
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true,
-          "groupId": "$direct"
+          "groupId": "$auto"
         }
       }
     },
@@ -79,11 +66,6 @@
           "name": "UserAttributesList",
           "target": "UserAttributesListTarget",
           "pattern": ":?query:"
-        },
-        {
-          "name": "UserAttributesDetail",
-          "target": "UserAttributesDetailTarget",
-          "pattern": "UserAttributes({key}):?query:"
         }
       ],
       "targets": {
@@ -94,23 +76,8 @@
           "options": {
             "settings": {
               "contextPath": "/UserAttributes",
-              "initialLoad": true,
-              "navigation": {
-                "UserAttributes": {
-                  "detail": { "route": "UserAttributesDetail" }
-                }
-              }
-            }
-          }
-        },
-        "UserAttributesDetailTarget": {
-          "type": "Component",
-          "id": "UserAttributesDetailTarget",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "contextPath": "/UserAttributes",
-              "navigation": {}
+              "initialLoad": "Enabled",
+              "hideFilterBar": true
             }
           }
         }
