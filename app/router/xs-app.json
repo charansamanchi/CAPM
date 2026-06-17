@@ -1,6 +1,6 @@
 {
   "authenticationMethod": "route",
-  "sessionTimeout": 30,
+  "sessionTimeout": 1440,
   "logout": {
     "logoutEndpoint": "/logout"
   },
@@ -12,7 +12,7 @@
     },
     {
       "source": "^/user-attrs-ui/(.*)$",
-      "target": "/comcapmuserattrs-1.0.1/$1",
+      "target": "/comcapmuserattrsv3-2.0.0/$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa"
     },

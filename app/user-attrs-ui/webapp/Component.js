@@ -1,14 +1,12 @@
-sap.ui.define(["sap/fe/core/AppComponent"], function (AppComponent) {
+sap.ui.define([
+    "sap/ui/core/UIComponent"
+], function (UIComponent) {
     "use strict";
-    debugger; // BP1: module loaded
-    var Component = AppComponent.extend("com.capm.userattrs.Component", {
+    return UIComponent.extend("com.capm.userattrsv3.Component", {
         metadata: { manifest: "json" },
         init: function () {
-            debugger; // BP2: init called
-            AppComponent.prototype.init.apply(this, arguments);
-            debugger; // BP3: after super init
+            UIComponent.prototype.init.apply(this, arguments);
+            this.getRouter().initialize();
         }
     });
-    //debugger; // BP4: class defined
-    return Component;
 });

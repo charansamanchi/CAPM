@@ -1,19 +1,42 @@
 {
+  "xsappname": "CAPM",
+  "tenant-mode": "dedicated",
   "scopes": [
     {
       "name": "$XSAPPNAME.User",
       "description": "Authenticated user scope"
     }
   ],
-  "attributes": [],
+  "attributes": [
+    {
+      "name": "ANID",
+      "description": "Ariba Network ID from SAML assertion",
+      "valueType": "string"
+    },
+    {
+      "name": "email",
+      "description": "Contact email from SAML assertion",
+      "valueType": "string"
+    },
+    {
+      "name": "Permissions",
+      "description": "AN permissions from SAML assertion",
+      "valueType": "string"
+    }
+  ],
   "role-templates": [
     {
       "name": "User",
       "description": "Authenticated users",
       "scope-references": [
-        "$XSAPPNAME.User"
+        "$XSAPPNAME.User",
+        "user_attributes"
       ],
-      "attribute-references": []
+      "attribute-references": [
+        "ANID",
+        "email",
+        "Permissions"
+      ]
     }
   ],
   "role-collections": [
@@ -28,7 +51,8 @@
   "oauth2-configuration": {
     "includeSystemAttributeGroups": true,
     "includeSystemAttributeRoleCollections": true,
-    "credentialTypes": ["binding-secret", "x509"]
+    "credentialTypes": ["binding-secret", "x509"],
+    "system-attributes": ["xs.saml.groups", "xs.rolecollections"]
   },
   "authorities-inheritance": false
 }

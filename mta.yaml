@@ -36,7 +36,11 @@ modules:
       requires:
         - name: CAPM-user-inspect-ui
           artifacts:
-            - '**'
+            - '!index.html'
+            - 'Component*.js'
+            - 'Component*.js.map'
+            - 'manifest.json'
+            - 'i18n/**'
           target-path: resources/user-inspect-ui/
     requires:
       - name: srv-api
@@ -101,7 +105,7 @@ modules:
           target-path: resources/
         - name: CAPM-user-attrs-ui
           artifacts:
-            - com.capm.userattrs.zip
+            - com.capm.userattrsv3.zip
           target-path: resources/
 
 resources:

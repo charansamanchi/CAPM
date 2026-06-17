@@ -2,7 +2,7 @@ const { execSync } = require('child_process')
 const path = require('path')
 const fs   = require('fs')
 
-const APP_ID = 'com.capm.userattrs'
+const APP_ID = 'com.capm.userattrsv3'
 const dist   = path.resolve('dist')
 const out    = path.join(dist, `${APP_ID}.zip`)
 

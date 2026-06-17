@@ -1,6 +1,6 @@
 specVersion: "3.0"
 metadata:
-  name: com.capm.userattrs
+  name: com.capm.userattrsv3
 type: application
 resources:
   configuration:

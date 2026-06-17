@@ -1,0 +1,41 @@
+<mvc:View
+    controllerName="com.capm.userattrsv3.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+    <App id="app">
+        <Page title="User Attributes" showNavButton="false">
+            <headerContent>
+                <Button text="Sign Out" type="Reject" press=".onSignOut"/>
+            </headerContent>
+            <content>
+                <Panel headerText="Identity" expandable="false" class="sapUiSmallMargin">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <HBox><Label text="User UUID" width="200px" class="sapUiSmallMarginEnd"/><Text id="user_uuid"/></HBox>
+                            <HBox><Label text="User ID (IAS)" width="200px" class="sapUiSmallMarginEnd"/><Text id="user_id"/></HBox>
+                            <HBox><Label text="Email" width="200px" class="sapUiSmallMarginEnd"/><Text id="email"/></HBox>
+                            <HBox><Label text="Given Name" width="200px" class="sapUiSmallMarginEnd"/><Text id="given_name"/></HBox>
+                            <HBox><Label text="Family Name" width="200px" class="sapUiSmallMarginEnd"/><Text id="family_name"/></HBox>
+                            <HBox><Label text="Sub" width="200px" class="sapUiSmallMarginEnd"/><Text id="sub"/></HBox>
+                            <HBox><Label text="Sub IdP" width="200px" class="sapUiSmallMarginEnd"/><Text id="sub_idp"/></HBox>
+                            <HBox><Label text="Origin / IdP" width="200px" class="sapUiSmallMarginEnd"/><Text id="origin"/></HBox>
+                            <HBox><Label text="ANID" width="200px" class="sapUiSmallMarginEnd"/><Text id="anid"/></HBox>
+                        </VBox>
+                    </content>
+                </Panel>
+                <Panel headerText="Attribute Bags" expandable="true" expanded="false" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <HBox><Label text="Raw JWT info" width="200px" class="sapUiSmallMarginEnd"/><TextArea id="raw_token_claims" rows="4" width="600px" editable="false"/></HBox>
+                            <HBox><Label text="IAS Groups" width="200px" class="sapUiSmallMarginEnd"/><TextArea id="ias_groups" rows="3" width="600px" editable="false"/></HBox>
+                            <HBox><Label text="SCIM / Diagnostics" width="200px" class="sapUiSmallMarginEnd"/><TextArea id="scim_user" rows="4" width="600px" editable="false"/></HBox>
+                            <HBox><Label text="req.user.attr (CAP)" width="200px" class="sapUiSmallMarginEnd"/><TextArea id="cap_user_attrs" rows="4" width="600px" editable="false"/></HBox>
+                            <HBox><Label text="AN Permissions" width="200px" class="sapUiSmallMarginEnd"/><TextArea id="permissions" rows="4" width="600px" editable="false"/></HBox>
+                        </VBox>
+                    </content>
+                </Panel>
+            </content>
+        </Page>
+    </App>
+</mvc:View>

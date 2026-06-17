@@ -1,12 +1,12 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "com.capm.userattrs",
+    "id": "com.capm.userattrsv3",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
-    "applicationVersion": { "version": "1.0.1" },
+    "applicationVersion": { "version": "2.0.0" },
     "dataSources": {
       "mainService": {
         "uri": "/odata/v4/user-inspect/",
@@ -20,24 +20,18 @@
     "fullWidth": true,
     "deviceTypes": { "desktop": true, "tablet": true, "phone": false }
   },
-  "sap.fiori": {
-    "registrationIds": [],
-    "archeType": "analytical"
-  },
   "sap.ui5": {
     "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.120.0",
       "libs": {
-        "sap.ui.core":      {},
-        "sap.fe.templates": {},
-        "sap.m":            {},
-        "sap.f":            {}
+        "sap.ui.core": {},
+        "sap.m":       {}
       }
     },
     "contentDensities": { "compact": true, "cozy": true },
     "rootView": {
-      "viewName": "sap.fe.core.rootView.NavContainer",
+      "viewName": "com.capm.userattrsv3.view.Main",
       "type": "XML",
       "async": true,
       "id": "appRootView"
@@ -45,7 +39,7 @@
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "settings": { "bundleName": "com.capm.userattrs.i18n.i18n" }
+        "settings": { "bundleName": "com.capm.userattrsv3.i18n.i18n" }
       },
       "": {
         "dataSource": "mainService",
@@ -54,33 +48,24 @@
           "synchronizationMode": "None",
           "operationMode": "Server",
           "autoExpandSelect": true,
-          "earlyRequests": true,
           "groupId": "$auto"
         }
       }
     },
     "routing": {
-      "config": { "routerClass": "sap.m.routing.Router" },
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "com.capm.userattrsv3.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "async": true
+      },
       "routes": [
-        {
-          "name": "UserAttributesList",
-          "target": "UserAttributesListTarget",
-          "pattern": ":?query:"
-        }
+        { "name": "main", "pattern": "", "target": "main" }
       ],
       "targets": {
-        "UserAttributesListTarget": {
-          "type": "Component",
-          "id": "UserAttributesListTarget",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "contextPath": "/UserAttributes",
-              "initialLoad": "Enabled",
-              "hideFilterBar": true
-            }
-          }
-        }
+        "main": { "viewName": "Main" }
       }
     }
   }

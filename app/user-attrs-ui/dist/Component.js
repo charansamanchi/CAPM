@@ -1,2 +1,2 @@
-sap.ui.define(["sap/fe/core/AppComponent"],function(e){"use strict";debugger;var t=e.extend("com.capm.userattrs.Component",{metadata:{manifest:"json"},init:function(){debugger;e.prototype.init.apply(this,arguments);debugger}});debugger;return t});
+sap.ui.define(["sap/ui/core/UIComponent"],function(t){"use strict";return t.extend("com.capm.userattrsv3.Component",{metadata:{manifest:"json"},init:function(){t.prototype.init.apply(this,arguments);this.getRouter().initialize()}})});
 //# sourceMappingURL=Component.js.map
